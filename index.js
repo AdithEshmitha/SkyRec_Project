@@ -16,21 +16,31 @@ app.use(bodyParser.json());
 app.use(
     (req, res, next) => {
         const value = req.header("Authorization");
-        if (value != null) {
-            const token = value.replace("Bearer ", "");
-            jwt.verify(token, "skyrec@adith",
-                (err, decoded) => {
-                    if (decoded == null) {
-                        res.status(403).json({
-                            massage: "Unauthorized"
-                        })
+        if (tokenInCor != null) {
+
+            const newTokenn = tokenInCor.replace("Bearer ", "");
+
+            jwt.verify(newTokenn, "auth_$0425",
+                (err, decode) => {
+
+                    if (decode == null) {
+                        res.status(403).json(
+                            {
+                                massage: "Unauthorized Access Detected"
+                            }
+                        );
+
                     } else {
-                        req.user = decoded;
+
+                        req.user = decode;
                         next();
+
                     }
                 }
             );
-            next()
+
+        } else {
+            next();
         }
     }
 );
