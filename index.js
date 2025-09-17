@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import userRoute from './Routers/userRouter.js';
 import jwt from 'jsonwebtoken';
+import productRouter from './Routers/productRouter.js';
 
 // Get Express and Connection String
 const app = express();
@@ -15,35 +16,28 @@ app.use(bodyParser.json());
 // Custom Middlewere
 app.use(
     (req, res, next) => {
-        const value = req.header("Authorization");
-        if (tokenInCor != null) {
-
-            const newTokenn = tokenInCor.replace("Bearer ", "");
-
-            jwt.verify(newTokenn, "auth_$0425",
-                (err, decode) => {
-
-                    if (decode == null) {
-                        res.status(403).json(
-                            {
-                                massage: "Unauthorized Access Detected"
-                            }
-                        );
-
+        const value = req.header("Authorization")
+        if (value != null) {
+            const token = value.replace("Bearer ", "")
+            jwt.verify(
+                token,
+                "skyrec@adith",
+                (err, decoded) => {
+                    if (decoded == null) {
+                        res.status(403).json({
+                            message: "Unauthorized"
+                        })
                     } else {
-
-                        req.user = decode;
-                        next();
-
+                        req.user = decoded
+                        next()
                     }
                 }
-            );
-
+            )
         } else {
-            next();
+            next()
         }
     }
-);
+)
 
 // Connect Express to Database
 mongoose.connect(connectionString).then(
@@ -57,6 +51,7 @@ mongoose.connect(connectionString).then(
 );
 
 app.use("/users", userRoute);
+app.use("/products", productRouter);
 
 // Server Run Code
 app.listen(5000, () => {
