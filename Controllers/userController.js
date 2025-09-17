@@ -1,6 +1,7 @@
 import Users from '../Modules/users.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 export function createUser(req, res) {
 
@@ -62,7 +63,7 @@ export function loginUser(req, res) {
                         isEmailVeryfied: user.isEmailVeryfied,
                         image: user.image
                     },
-                    "skyrec@adith"
+                    process.env.JWT_KEY
                 );
 
                 res.json(

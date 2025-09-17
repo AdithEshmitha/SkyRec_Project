@@ -5,10 +5,13 @@ import bodyParser from 'body-parser';
 import userRoute from './Routers/userRouter.js';
 import jwt from 'jsonwebtoken';
 import productRouter from './Routers/productRouter.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Get Express and Connection String
 const app = express();
-const connectionString = "mongodb+srv://admin_user:adith1234@cluster0.25dxlmv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const connectionString = process.env.MONGO_URI;
 
 // Use Body Parser
 app.use(bodyParser.json());
@@ -21,7 +24,7 @@ app.use(
             const token = value.replace("Bearer ", "")
             jwt.verify(
                 token,
-                "skyrec@adith",
+                process.env.JWT_KEY,
                 (err, decoded) => {
                     if (decoded == null) {
                         res.status(403).json({
