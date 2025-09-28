@@ -6,6 +6,7 @@ import userRoute from './Routers/userRouter.js';
 import jwt from 'jsonwebtoken';
 import productRouter from './Routers/productRouter.js';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const connectionString = process.env.MONGO_URI;
 
 // Use Body Parser
 app.use(bodyParser.json());
+app.use(cors());
 
 // Custom Middlewere
 app.use(

@@ -69,7 +69,8 @@ export function loginUser(req, res) {
                 res.json(
                     {
                         token: token,
-                        massage: "Login Successfull..."
+                        massage: "Login Successfull...",
+                        role: user.role
                     }
                 );
             } else {
